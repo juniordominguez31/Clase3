@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yoga — Espacio y Equilibrio</title>
+  <style>
+/* === DISEÑO DE MARCA — ESTUDIO DE YOGA === */
+:root {
+    --crema: #FAF6F0;
+    --verde-salvia: #7A9E7E;
+    --terracota: #B96F58;
+    --texto-oscuro: #333333;
+    --texto-medio: #666666;
+    --blanco: #FFFFFF;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Inter', Roboto, sans-serif;
+    background-color: var(--crema);
+    color: var(--texto-oscuro);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 750px;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    color: var(--verde-salvia);
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--texto-oscuro);
+  }
+  
+  .subtitulo {
+    color: var(--texto-medio);
+    margin-bottom: 1rem;
+  }
+  
+  /* === PESTAÑAS === */
+  .pestañas {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 1.5rem;
+  }
+  
+  .boton-pestaña {
+    padding: 0.9rem 1.4rem;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--texto-medio);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .boton-pestaña:hover {
+    background: rgba(122, 158, 126, 0.1);
+  }
+  
+  .boton-pestaña.activa {
+    border-bottom-color: var(--verde-salvia);
+    color: var(--verde-salvia);
+    font-weight: 600;
+  }
+  
+  .contenido-pestaña {
+    display: none;
+  }
+  
+  .contenido-pestaña.activa {
+    display: block;
+    animation: aparecer 0.3s ease;
+  }
+  
+  @keyframes aparecer {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* === TARJETAS Y ELEMENTOS === */
+  .card {
+    background: var(--blanco);
+    border-radius: 12px;
+    padding: 1.4rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  input, button {
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    margin: 0.4rem 0;
+    width: 100%;
+  }
+  
+  button {
+    background-color: var(--verde-salvia);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: opacity 0.2s;
+  }
+  
+  button:hover {
+    opacity: 0.9;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .btn-secundario {
+    background-color: var(--texto-medio);
+  }
+  
+  .saldo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0.8rem 0;
+  }
+  
+  .aviso {
+    color: var(--terracota);
+    font-weight: 600;
+    margin-top: 0.6rem;
+    display: none;
+  }
+  
+  .alumna-item {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+  
+  .alumna-item:hover {
+    background-color: #f5ebe0;
+  }
+  
+  .historial {
+    margin-top: 1.2rem;
+    font-size: 0.9rem;
+    color: var(--texto-medio);
+  }
+  
+  .historial ul {
+    margin-top: 0.5rem;
+    padding-left: 1.2rem;
+  }
+  
+  .vacio {
+    color: #999;
+    font-style: italic;
+  }
+  
+  .lista-criterios {
+    line-height: 1.8;
+    list-style: none;
+  }
+  </style>
+</head>
+<body>
+
+  <h1>🌟 Yoga — Espacio y Equilibrio</h1>
+
+  <!-- Barra de Pestañas -->
+  <div class="pestañas">
+    <button class="boton-pestaña activa" data-pestaña="registro">➕ Registro</button>
+    <button class="boton-pestaña" data-pestaña="alumnas">📋 Alumnas</button>
+    <button class="boton-pestaña" data-pestaña="detalle">👤 Ficha</button>
+    <button class="boton-pestaña" data-pestaña="validacion">✅ Validación</button>
+  </div>
+
+  <!-- Pestaña 1: Registro -->
+  <div class="contenido-pestaña activa" id="p-registro">
+    <div class="card">
+      <h2>Registrar nueva alumna</h2>
+      <p class="subtitulo">Paquete estándar: 10 clases</p>
+      <input type="text" id="nombre-nuevo" placeholder="Escribe el nombre completo">
+      <button onclick="registrarAlumna()">Confirmar registro</button>
+    </div>
+  </div>
+
+  <!-- Pestaña 2: Lista de Alumnas -->
+  <div class="contenido-pestaña" id="p-alumnas">
+    <div class="card">
+      <h2>Listado de alumnas</h2>
+      <p class="subtitulo">Haz clic en un nombre para ver su ficha</p>
+      <div id="lista-alumnas"></div>
+    </div>
+  </div>
+
+  <!-- Pestaña 3: Ficha / Detalle -->
+  <div class="contenido-pestaña" id="p-detalle">
+    <div class="card">
+      <h2 id="ficha-nombre">Selecciona una alumna</h2>
+      <p>Clases compradas: <span id="ficha-total">—</span></p>
+      <p>Clases usadas: <span id="ficha-usadas">—</span></p>
+      <p class="saldo">Saldo disponible: <span id="ficha-saldo">—</span></p>
+      <p id="aviso-renovar" class="aviso">⚠️ Quedan 2 clases. ¿Renovar paquete?</p>
+
+      <button id="btn-asistencia" onclick="registrarAsistencia()">✅ Registrar asistencia</button>
+      <button class="btn-secundario" onclick="renovarPaquete()">🔄 Renovar paquete (+10 clases)</button>
+
+      <div class="historial">
+        <strong>Historial de asistencias:</strong>
+        <ul id="ficha-historial">
+          <li class="vacio">Sin registros aún</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pestaña 4: Validación -->
+  <div class="contenido-pestaña" id="p-validacion">
+    <div class="card">
+      <h2>Verificación de Criterios</h2>
+      <p class="subtitulo">Guía para probar cada requisito</p>
+      <ul class="lista-criterios">
+        <li><strong>CA-01</strong> — Al registrar, saldo inicial = 10 ✅</li>
+        <li><strong>CA-02</strong> — Registrar asistencia → saldo baja 1 ✅</li>
+        <li><strong>CA-03</strong> — Saldo nunca negativo → botón bloqueado si saldo = 0 ✅</li>
+        <li><strong>CA-04</strong> — Saldo = 2 → aparece aviso de renovación ✅</li>
+        <li><strong>CA-05</strong> — Historial muestra fechas exactas ✅</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+// === BASE DE DATOS EN MEMORIA ===
+let alumnas = [];
+let alumnaActiva = null;
+
+// === SISTEMA DE PESTAÑAS ===
+document.querySelectorAll('.boton-pestaña').forEach(boton => {
+  boton.addEventListener('click', () => {
+    // Quitar estado activo a todas
+    document.querySelectorAll('.boton-pestaña').forEach(b => b.classList.remove('activa'));
+    document.querySelectorAll('.contenido-pestaña').forEach(c => c.classList.remove('activa'));
+    
+    // Activar la seleccionada
+    boton.classList.add('activa');
+    const idPestaña = 'p-' + boton.dataset.pestaña;
+    document.getElementById(idPestaña).classList.add('activa');
+  });
+});
+
+// === FUNCIONES PRINCIPALES ===
+
+function registrarAlumna() {
+  const nombre = document.getElementById('nombre-nuevo').value.trim();
+  if (!nombre) return alert('Escribe el nombre de la alumna');
+
+  alumnas.push({
+    id: Date.now(),
+    nombre: nombre,
+    totalClases: 10,
+    usadas: 0,
+    historial: []
+  });
+
+  document.getElementById('nombre-nuevo').value = '';
+  renderizarLista();
+  // Cambiar automáticamente a la lista
+  document.querySelector('[data-pestaña="alumnas"]').click();
+}
+
+function renderizarLista() {
+  const contenedor = document.getElementById('lista-alumnas');
+  contenedor.innerHTML = '';
+
+  if (alumnas.length === 0) {
+    contenedor.innerHTML = '<p class="vacio">No hay alumnas registradas</p>';
+    return;
+  }
+
+  alumnas.forEach(a => {
+    const saldo = a.totalClases - a.usadas;
+    const div = document.createElement('div');
+    div.className = 'alumna-item';
+    div.innerHTML = `<strong>${a.nombre}</strong><br>Saldo: ${saldo} clases`;
+    div.onclick = () => abrirFicha(a.id);
+    contenedor.appendChild(div);
+  });
+}
+
+function abrirFicha(id) {
+  alumnaActiva = alumnas.find(a => a.id === id);
+  if (!alumnaActiva) return;
+
+  // Actualizar datos en pantalla
+  document.getElementById('ficha-nombre').textContent = alumnaActiva.nombre;
+  document.getElementById('ficha-total').textContent = alumnaActiva.totalClases;
+  document.getElementById('ficha-usadas').textContent = alumnaActiva.usadas;
+  actualizarSaldoYAviso();
+  renderizarHistorial();
+
+  // Ir a la pestaña de ficha
+  document.querySelector('[data-pestaña="detalle"]').click();
+}
+
+function actualizarSaldoYAviso() {
+  const saldo = alumnaActiva.totalClases - alumnaActiva.usadas;
+  document.getElementById('ficha-saldo').textContent = saldo;
+
+  // CA-04: Mostrar aviso cuando queden 2 clases
+  const aviso = document.getElementById('aviso-renovar');
+  aviso.style.display = saldo === 2 ? 'block' : 'none';
+
+  // CA-03: Bloquear botón si no hay saldo
+  document.getElementById('btn-asistencia').disabled = saldo <= 0;
+}
+
+function registrarAsistencia() {
+  const saldo = alumnaActiva.totalClases - alumnaActiva.usadas;
+  if (saldo <= 0) {
+    alert('❌ No hay clases disponibles. Renueva el paquete primero.');
+    return;
+  }
+
+  alumnaActiva.usadas += 1;
+  alumnaActiva.historial.push(new Date().toLocaleDateString('es-ES'));
+
+  actualizarSaldoYAviso();
+  renderizarHistorial();
+  renderizarLista();
+}
+
+function renovarPaquete() {
+  if (!alumnaActiva) return;
+  alumnaActiva.totalClases += 10;
+  actualizarSaldoYAviso();
+  renderizarLista();
+  alert('✅ Paquete renovado: +10 clases');
+}
+
+function renderizarHistorial() {
+  const lista = document.getElementById('ficha-historial');
+  lista.innerHTML = '';
+
+  if (alumnaActiva.historial.length === 0) {
+    lista.innerHTML = '<li class="vacio">Sin registros aún</li>';
+    return;
+  }
+
+  alumnaActiva.historial.forEach(fecha => {
+    const li = document.createElement('li');
+    li.textContent = fecha;
+    lista.appendChild(li);
+  });
+}
+  </script>
+</body>
+</html>
